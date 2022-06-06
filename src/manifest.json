@@ -17,5 +17,9 @@
     "48": "./images/logo.png",
     "128": "./images/logo.png"
   },
-  "permissions": ["storage", "activeTab", "scripting"]
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://*.privatespectrum.xyz/",
+    "http://localhost:5000/"
+  ]
 }

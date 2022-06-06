@@ -4,100 +4,63 @@
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <!-- <div id="page_main">
-      <div>
-        <img src="./images/logo.png" width="140px" alt="" />
+    <div class="logo-container">
+        <img
+          class="logo"
+          src="./images/logo.png"
+          width="60px"
+          alt="spectrum logo"
+        />
+    </div>
+    <div class="pages">
+      <div class="start" id="start">
+        <button type="button" id="wallet-btn" style="color: purple">
+          Create Wallet
+        </button>
+
+        <button type="button" style="color: blue">Import Wallet</button>
+
+        <button type="button" id="settings-btn" style="color: #111">
+          Settings
+        </button>
       </div>
-      <button id="accounts_btn">Accounts</button>
-      <button>Create new wallet</button>
-      <button>Import existing wallet</button>
-      <button>FAQ's</button>
-      <button id="settings_btn">Settings</button>
-    </div>
-    <div id="page_accounts">
-      <h1>Accounts</h1>
-      <button class="account-btn">Family 1</button>
-      <button class="account-btn">Family 2</button>
-      <button class="account-btn">Trading Acc</button>
-      <button class="account-btn">NFT Collection</button>
-      <button class="account-btn">Personal</button>
-      <button>Add a new account</button>
-    </div>
-    <div id="page_settings">
-      <h1>Settings</h1>
-      <form>
-        <div>
-          <label for="setting1"> Confidential Transaction</label>
-          <input
-            type="checkbox"
-            id="setting1"
-="setting1"
-            value="confidential_txn"
-          />
+
+      <div class="accounts" id="accounts">
+        <h2>Accounts</h2>
+        <div id="account-list">
+          <button class="account-btn" type="button">Family 1</button>
+          <button class="account-btn" type="button">Family 2</button>
+          <button class="account-btn" type="button">Trading Acc</button>
+          <button class="account-btn" type="button">NFT Collection</button>
+          <button class="account-btn" type="button">Personal</button>
         </div>
-        <div>
-          <label for="setting2">TOR</label>
-          <input type="checkbox" id="setting2" name="setting2" value="tor" />
+        <button id="account-add" type="button">Add a new account</button>
+      </div>
+
+      <div class="settings" id="settings">
+        <h2>Settings</h2>
+        <div class="selection">
+          <label>Confidential Transaction
+            <input type="checkbox" name="confidential" id="confidential" />
+          </label>
         </div>
-      </form>
-    </div>
-    <div id="page_payment_code">
-      <h1>Payment Code</h1>
-      <img class="center" src="images/qr_dummy.png" />
-      <p class="center" style="width: 90%">0x123456789...</p>
-      <button>&#x2398;</button>
-    </div> -->
-
-    <div class="import-wallet" id="import-wallet">
-      <img
-        class="logo"
-        src="./images/logo.png"
-        width="60px"
-        alt="spectrum logo"
-      />
-
-      <button type="button" id="wallet-btn" style="color: purple">
-        Create Wallet
-      </button>
-
-      <button type="button" style="color: blue">Import Wallet</button>
-
-      <button type="button" id="settings-btn" style="color: #111">
-        Settings
-      </button>
-    </div>
-
-    <div class="accounts" id="accounts">
-      <h2>Accounts</h2>
-      <button class="account-btn" type="button">Family 1</button>
-      <button class="account-btn" type="button">Family 2</button>
-      <button class="account-btn" type="button">Trading Acc</button>
-      <button class="account-btn" type="button">NFT Collection</button>
-      <button class="account-btn" type="button">Personal</button>
-      <button class="account-btn" type="button">Add a new account</button>
-    </div>
-
-    <div class="settings" id="settings">
-      <h2>Settings</h2>
-      <div class="selection">
-        <label>Confidential Transaction </label>
-
-        <input type="checkbox" name="confidential" id="confidential" />
+        <div class="selection">
+          <label>TOR
+            <input type="checkbox" name="tor" id="tor" />
+          </label>
+        </div>
       </div>
-      <div class="selection">
-        <label>TOR </label>
-        <input type="checkbox" name="tor" id="tor" />
-      </div>
-      <div class="payment-btn">Payment Code</div>
-    </div>
 
-    <div class="payment" id="payment">
-      <h2>Payment Code</h2>
-      <div class="barcode">
-        <img src="./images/qrcode.png" alt="qrcode" />
+      <div class="payment" id="payment">
+        <h2>Payment Code</h2>
+        <div class="barcode">
+          <img src="./images/qrcode.png" alt="Dummy QR code" />
+        </div>
+        <p class="wallet-address" id="wallet-address"></p>
+        <span data-text_id="wallet-address" class="copy-to-clipboard"> &#x2398; </span>
       </div>
-      <p class="wallet-address">abc123</p>
-      <span class="copy-to-clipboard"> &#x2398; </span>
+
+      <div class="loading" id="loading">Loading ...</div>
     </div>
 
     <script src="popup.js"></script>
