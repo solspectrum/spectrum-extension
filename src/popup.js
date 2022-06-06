@@ -31,7 +31,7 @@ const createSeed = () => {
 };
 
 const getAddress = async (seed, index) => {
-  return fetch(`${API_DOMAIN}/account` + new URLSearchParams({seed, index}))
+  return fetch(`${API_DOMAIN}/account?` + new URLSearchParams({seed, index}))
     .then(r=>r.json())
     .then(j=>j.address);
 };
@@ -44,6 +44,11 @@ const renderAccountsPage = async (props) => {
     btn.setAttribute("type", "button");
     btn.innerText = name;
     btn.style.background = color;
+    btn.addEventListener("click", async (e) => {
+      const seed = await fetchUserSeed();
+      const index = e.target.dataset.index;
+      await showPage("payment", {seed, index});
+    });
     return btn;
   };
 
@@ -62,6 +67,15 @@ const renderPaymentPage = async ({seed, index}) => {
 };
 
 const staticRender = async (props) => {};
+
+const handleCopyEvent = async (e) => {
+  const copyElement = document.getElementById(e.target.dataset.text_id);
+  try {
+    await navigator.clipboard.writeText(copyElement.innerText);
+  } catch (err) {
+    console.error("Failed to copy!", err);
+  }
+};
 
 // initialize localStorage with values for dummy API calls
 const initLocalStorage = async () => {
@@ -91,14 +105,8 @@ const initialize = async () => {
     .getElementById("settings-btn")
     .addEventListener("click", async () => showPage("settings"));
   document
-    .querySelectorAll(".account-btn")
-    .forEach(btn=> {
-      btn.addEventListener("click", async (e) => {
-        const seed = await fetchUserSeed();
-        const index = e.target.dataset.index;
-        await showPage("payment", {seed, index});
-      });
-    });
+    .querySelectorAll('.copy-to-clipboard')
+    .forEach(node => node.addEventListener("click", handleCopyEvent));
 
 
   await showPage("start");
