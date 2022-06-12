@@ -15,7 +15,7 @@ const showPage = (()=> {
 
 // functions beginning with fetchUser
 // will later on get data from external
-// API rather than localStorage
+// API rather than localStorage (probably?)
 const fetchUserSeed = async () => {
   return localStorage.getItem("seed");
 };
@@ -62,6 +62,13 @@ const renderAccountsPage = async (props) => {
 
 };
 
+const renderCreatePage = async (props) => {
+  const seed = await createSeed();
+  localStorage.setItem("seed", seed);
+  localStorage.setItem("accounts", JSON.stringify(INIT_ACCOUNTS));
+  document.getElementById('passphrase').innerHTML = seed;
+};
+
 const renderPaymentPage = async ({seed, index}) => {
   document.getElementById('wallet-address').innerHTML = await getAddress(seed, index);
 };
@@ -77,29 +84,20 @@ const handleCopyEvent = async (e) => {
   }
 };
 
-// initialize localStorage with values for dummy API calls
-const initLocalStorage = async () => {
-  if (localStorage.getItem("seed") === null ||
-      localStorage.getItem("accounts") === null) {
-    const seed = await createSeed();
-    localStorage.setItem("seed", seed);
-    localStorage.setItem("accounts", JSON.stringify(INIT_ACCOUNTS));
-  }
-};
-
 const initialize = async () => {
   Object.keys(PAGES).forEach(
     (page) => (document.getElementById(page).style.display = "none")
   );
   await showPage("loading");
 
-  await initLocalStorage();
-
   document
     .querySelector(".logo-container")
     .addEventListener("click", async () => showPage("start"));
   document
     .getElementById("wallet-btn")
+    .addEventListener("click", async () => showPage("create"));
+  document
+    .getElementById("accounts-btn")
     .addEventListener("click", async () => showPage("accounts"));
   document
     .getElementById("settings-btn")
@@ -116,6 +114,7 @@ const initialize = async () => {
 const API_DOMAIN = "http://localhost:5000";//"https://test.privatespectrum.xyz";
 const PAGES = {
   "start": {render: staticRender},
+  "create": {render: renderCreatePage},
   "accounts": {render: renderAccountsPage},
   "settings": {render: staticRender},
   "payment": {render: renderPaymentPage},
@@ -123,11 +122,13 @@ const PAGES = {
 };
 const COLORS = ["cd6ccd", "6492bd", "dddd66", "b9485b"];
 const INIT_ACCOUNTS = [
+  /*
   {name: "Family 1", color: 0},
   {name: "Family 2", color: 0},
   {name: "Trading Acc", color: 1},
   {name: "NFT Collection", color: 2},
   {name: "Personal", color: 3},
+  */
 ];
 
 // INITIALIZATION

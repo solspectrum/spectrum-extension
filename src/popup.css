@@ -98,3 +98,7 @@ button {
 .copy-to-clipboard {
   cursor: pointer;
 }
+
+#passphrase {
+  background-color: yellow;
+}
