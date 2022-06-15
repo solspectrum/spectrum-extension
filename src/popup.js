@@ -24,6 +24,10 @@ const fetchUserAccounts = async () => {
   return JSON.parse(localStorage.getItem("accounts"));
 };
 
+const saveUserAccounts = async (accounts) => {
+  localStorage.setItem("accounts", JSON.stringify(accounts));
+};
+
 const createSeed = () => {
   return fetch(`${API_DOMAIN}/create`)
     .then(r=>r.json())
@@ -37,12 +41,12 @@ const getAddress = async (seed, index) => {
 };
 
 const renderAccountsPage = async (props) => {
-  const createAccountButton = (name, color, index) => {
+  const createAccountButton = (label, color, index) => {
     const btn = document.createElement("button");
     btn.dataset.index = index;
     btn.className = "account-btn";
     btn.setAttribute("type", "button");
-    btn.innerText = name;
+    btn.innerText = label;
     btn.style.background = color;
     btn.addEventListener("click", async (e) => {
       const seed = await fetchUserSeed();
@@ -55,8 +59,8 @@ const renderAccountsPage = async (props) => {
   const accountListContainer = document.getElementById('account-list');
   accountListContainer.innerHTML = "";
   const accounts = await fetchUserAccounts();
-  accounts.forEach(({name, color}, i) => {
-    const button = createAccountButton(name, `#${COLORS[color]}`, i);
+  accounts.forEach(({label, color}, i) => {
+    const button = createAccountButton(label, `#${COLORS[color]}`, i);
     accountListContainer.append(button);
   });
 
@@ -77,7 +81,6 @@ const renderAddPage = async (props) => {
     rdo.setAttribute("value", idx);
     rdo.checked = idx===0;
     const spn = document.createElement("span");
-    console.log(`#${color}`);
     spn.style.backgroundColor = `#${color}`;
     spn.style['font-family'] = "monospace";
     spn.style.border = "1px solid black";
@@ -109,6 +112,14 @@ const handleCopyEvent = async (e) => {
   }
 };
 
+const handleAddAccountSubmit = async (e) => {
+  const label = document.querySelector('input[name=label]').value;
+  const color = parseInt(document.querySelector('input[name=color]:checked').value);
+  const accounts = await fetchUserAccounts();
+  await saveUserAccounts([...accounts, {label, color}]);
+  await showPage("accounts");
+};
+
 const initialize = async () => {
   Object.keys(PAGES).forEach(
     (page) => (document.getElementById(page).style.display = "none")
@@ -122,11 +133,16 @@ const initialize = async () => {
     .getElementById("wallet-btn")
     .addEventListener("click", async () => showPage("create"));
   document
-    .getElementById("accounts-btn")
-    .addEventListener("click", async () => showPage("accounts"));
+    .querySelectorAll(".accounts-btn")
+    .forEach(node =>
+      node.addEventListener("click",
+                            async () => showPage("accounts")));
   document
     .getElementById("account-add")
     .addEventListener("click", async () => showPage("add"));
+  document
+    .getElementById("add-account-btn")
+    .addEventListener("click", handleAddAccountSubmit);
   document
     .getElementById("settings-btn")
     .addEventListener("click", async () => showPage("settings"));
@@ -152,11 +168,11 @@ const PAGES = {
 const COLORS = ["cd6ccd", "6492bd", "dddd66", "b9485b"];
 const INIT_ACCOUNTS = [
   /*
-  {name: "Family 1", color: 0},
-  {name: "Family 2", color: 0},
-  {name: "Trading Acc", color: 1},
-  {name: "NFT Collection", color: 2},
-  {name: "Personal", color: 3},
+  {label: "Family 1", color: 0},
+  {label: "Family 2", color: 0},
+  {label: "Trading Acc", color: 1},
+  {label: "NFT Collection", color: 2},
+  {label: "Personal", color: 3},
   */
 ];
 

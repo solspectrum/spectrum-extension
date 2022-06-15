@@ -84,7 +84,8 @@ button {
 }
 */
 
-#account-add {
+.account-add {
+  color: purple;
   background-color: #ccc;
 }
 
