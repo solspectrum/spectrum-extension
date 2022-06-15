@@ -69,6 +69,31 @@ const renderCreatePage = async (props) => {
   document.getElementById('passphrase').innerHTML = seed;
 };
 
+const renderAddPage = async (props) => {
+  const createRadio = (color, idx) => {
+    const rdo = document.createElement("input");
+    rdo.setAttribute("type", "radio");
+    rdo.setAttribute("name", "color");
+    rdo.setAttribute("value", idx);
+    rdo.checked = idx===0;
+    const spn = document.createElement("span");
+    console.log(`#${color}`);
+    spn.style.backgroundColor = `#${color}`;
+    spn.style['font-family'] = "monospace";
+    spn.style.border = "1px solid black";
+    spn.innerHTML =  "&nbsp;&nbsp;&nbsp;&nbsp;";
+    const lbl = document.createElement("label");
+    lbl.append(rdo);
+    lbl.append(spn);
+    const dv = document.createElement("div");
+    dv.append(lbl);
+    return dv;
+  };
+  const container = document.getElementById('colors');
+  container.innerHTML = "";
+  COLORS.forEach((color, i) => container.append(createRadio(color, i)));
+};
+
 const renderPaymentPage = async ({seed, index}) => {
   document.getElementById('wallet-address').innerHTML = await getAddress(seed, index);
 };
@@ -100,6 +125,9 @@ const initialize = async () => {
     .getElementById("accounts-btn")
     .addEventListener("click", async () => showPage("accounts"));
   document
+    .getElementById("account-add")
+    .addEventListener("click", async () => showPage("add"));
+  document
     .getElementById("settings-btn")
     .addEventListener("click", async () => showPage("settings"));
   document
@@ -114,6 +142,7 @@ const initialize = async () => {
 const API_DOMAIN = "http://localhost:5000";//"https://test.privatespectrum.xyz";
 const PAGES = {
   "start": {render: staticRender},
+  "add": {render: renderAddPage},
   "create": {render: renderCreatePage},
   "accounts": {render: renderAccountsPage},
   "settings": {render: staticRender},
