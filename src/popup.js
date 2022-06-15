@@ -51,7 +51,7 @@ const renderAccountsPage = async (props) => {
     btn.addEventListener("click", async (e) => {
       const seed = await fetchUserSeed();
       const index = e.target.dataset.index;
-      await showPage("payment", {seed, index});
+      await showPage("address", {seed, index});
     });
     return btn;
   };
@@ -97,8 +97,8 @@ const renderAddPage = async (props) => {
   COLORS.forEach((color, i) => container.append(createRadio(color, i)));
 };
 
-const renderPaymentPage = async ({seed, index}) => {
-  document.getElementById('wallet-address').innerHTML = await getAddress(seed, index);
+const renderAddressPage = async ({seed, index}) => {
+  document.getElementById('account-address').innerHTML = await getAddress(seed, index);
 };
 
 const staticRender = async (props) => {};
@@ -162,7 +162,7 @@ const PAGES = {
   "create": {render: renderCreatePage},
   "accounts": {render: renderAccountsPage},
   "settings": {render: staticRender},
-  "payment": {render: renderPaymentPage},
+  "address": {render: renderAddressPage},
   "loading": {render: staticRender},
 };
 const COLORS = ["cd6ccd", "6492bd", "dddd66", "b9485b"];
