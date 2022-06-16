@@ -60,7 +60,7 @@ const renderAccountsPage = async (props) => {
   accountListContainer.innerHTML = "";
   const accounts = await fetchUserAccounts();
   accounts.forEach(({label, color}, i) => {
-    const button = createAccountButton(label, `#${COLORS[color]}`, i);
+    const button = createAccountButton(label, color, i);
     accountListContainer.append(button);
   });
 
@@ -71,30 +71,6 @@ const renderCreatePage = async (props) => {
   localStorage.setItem("seed", seed);
   localStorage.setItem("accounts", JSON.stringify(INIT_ACCOUNTS));
   document.getElementById('passphrase').innerHTML = seed;
-};
-
-const renderAddPage = async (props) => {
-  const createRadio = (color, idx) => {
-    const rdo = document.createElement("input");
-    rdo.setAttribute("type", "radio");
-    rdo.setAttribute("name", "color");
-    rdo.setAttribute("value", idx);
-    rdo.checked = idx===0;
-    const spn = document.createElement("span");
-    spn.style.backgroundColor = `#${color}`;
-    spn.style['font-family'] = "monospace";
-    spn.style.border = "1px solid black";
-    spn.innerHTML =  "&nbsp;&nbsp;&nbsp;&nbsp;";
-    const lbl = document.createElement("label");
-    lbl.append(rdo);
-    lbl.append(spn);
-    const dv = document.createElement("div");
-    dv.append(lbl);
-    return dv;
-  };
-  const container = document.getElementById('colors');
-  container.innerHTML = "";
-  COLORS.forEach((color, i) => container.append(createRadio(color, i)));
 };
 
 const renderAddressPage = async ({seed, index}) => {
@@ -114,7 +90,7 @@ const handleCopyEvent = async (e) => {
 
 const handleAddAccountSubmit = async (e) => {
   const label = document.querySelector('input[name=label]').value;
-  const color = parseInt(document.querySelector('input[name=color]:checked').value);
+  const color = document.querySelector('input[name=color]').value;
   const accounts = await fetchUserAccounts();
   await saveUserAccounts([...accounts, {label, color}]);
   await showPage("accounts");
@@ -155,26 +131,17 @@ const initialize = async () => {
 };
 
 // GLOBALS
-const API_DOMAIN = "http://localhost:5000";//"https://test.privatespectrum.xyz";
+const API_DOMAIN = "https://test.privatespectrum.xyz";//"http://localhost:5000";
 const PAGES = {
   "start": {render: staticRender},
-  "add": {render: renderAddPage},
+  "add": {render: staticRender},
   "create": {render: renderCreatePage},
   "accounts": {render: renderAccountsPage},
   "settings": {render: staticRender},
   "address": {render: renderAddressPage},
   "loading": {render: staticRender},
 };
-const COLORS = ["cd6ccd", "6492bd", "dddd66", "b9485b"];
-const INIT_ACCOUNTS = [
-  /*
-  {label: "Family 1", color: 0},
-  {label: "Family 2", color: 0},
-  {label: "Trading Acc", color: 1},
-  {label: "NFT Collection", color: 2},
-  {label: "Personal", color: 3},
-  */
-];
+const INIT_ACCOUNTS = [];
 
 // INITIALIZATION
 initialize();
